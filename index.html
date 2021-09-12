@@ -14,16 +14,16 @@
 			Import
 		</label>
 		<input id="file" type="file" multiple>
-		<span class="imported-file-count">No imported file</span>
+		<span class="imported-file-count">No imports</span>
 
-		<!--<button class="export" disabled >Export</button>-->
+		<button class="export-clippings">Export</button>
 	</header>
 	
 	<main>
 		<section id="search-box">
 			<img class="logo" src="imgs/ereader.png" height="80px" alt="ereader">
 			<h1>Kindle Highlight Explorer</h1>
-			<input type="text" placeholder="Search quote..." id="search-input">
+			<input type="text" placeholder="Search quotes..." id="search-input">
 			<div class="buttons">
 				<button class="submit">Search</button>
 				<button class="randomize">Randomize</button>
@@ -34,10 +34,10 @@
 			<p class="result-count">0 quotes</p>
 			<div class="filters">
 				<select id="filter-book">
-					<option>Livre</option>
+					<option></option>
 				</select>
 				<select id="filter-author">
-					<option>Auteur</option>
+					<option></option>
 				</select>
 
 			</div>
@@ -47,8 +47,8 @@
 		</section>
 	</main>
 
+	<script src="src/Filesaver.js"></script>
 	<script src="src/QuoteSearcher.js"></script>
 	<script src="src/main.js"></script>
-	
 </body>
 </html>

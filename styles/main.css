@@ -46,10 +46,12 @@ header button, .import {
 	box-shadow: 1px 1px 0px #0b0b0b;
 }
 
-header .export {
+header .export-clippings {
 	position: absolute;
 	right: 5px;
 }
+
+
 
 header .imported-file-count {
 	color: #989491;
@@ -103,11 +105,22 @@ header .import:hover {
 	box-shadow: 2px 2px 0px #0b0b0b;
 	position: relative;
 	font-size: 16px;
+	transform: rotateX(-360deg);
+	transition: 0.5s;
 }
 
 .quote-disabled {
 	text-decoration: line-through;
-	opacity: 0.7;
+	opacity: 0.6;
+	transform: rotateX(360deg);
+	transition: 0.5s;
+}
+
+.quote-box .locs {
+	font-size: 14px;
+	position: absolute;
+	right: 35px;
+	bottom: 5px;
 }
 
 .quote-box input {
@@ -115,9 +128,8 @@ header .import:hover {
 	right: 5px;
 	bottom: 5px;
 
-	/* unhide if adding feature */
-	display: none;
 }
+
 .quote-box q {
 	font-size:18px;
 }
@@ -127,7 +139,6 @@ header .import:hover {
 }
 
 .buttons {
-
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
@@ -143,14 +154,14 @@ header .import:hover {
 	box-shadow: 2px 2px 0px #0b0b0b;
 }
 
-.buttons button:hover, header .import:hover, header button:hover {
+.buttons button:hover, header .import:hover, header button:hover, header .export-clippings:hover {
 	cursor: pointer;
-	position: relative;
 	transform: scale(1.05);
 }
-.buttons button:active, header .import:active {
+.buttons button:active, header .import:active, header .export-clippings:active {
 	transform: scale(0.98);
 }
+
 .result-count {
 	margin: 0;
 	font-size: 16px;
@@ -174,6 +185,7 @@ header .import:hover {
 	font-family: "bookerly";
 	display: inline-block;
 	max-width: 200px;
+	min-width: 200px;
 	margin-left: 10px;
 	background: #b9cbcb;
 	border: 2px solid #0b0b0b;
@@ -185,7 +197,10 @@ header .import:hover {
 	font-family: "bookerly";
 	font-size: 16px;
 } 
-
+.results-info .filters select:hover, .results-info .filters select:focus {
+	transform: scale(1.05);
+	cursor: pointer;
+}
 h1 {
 	font-size: 52px;
 	font-family: "bookerly";

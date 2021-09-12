@@ -1,19 +1,58 @@
 const resultsBox = document.querySelector('#results-box');
-let allQuotes = [];
-let filteredQuotes = [];
 const filterBook = document.querySelector('#filter-book');
 const filterAuthor = document.querySelector('#filter-author');
 const searchInput = document.querySelector('#search-input');
+
 let filterBooks = [];
 let filterAuthors = [];
 let quoteSearcher = new QuoteSearcher();
 
 
-searchInput.value = "";
-// load files
-document.querySelector('#file').addEventListener('change', function() {
-	loadFiles(this.files);
-});
+function init() {
+	searchInput.value = "";
+
+	// load files
+	document.querySelector('#file').addEventListener('change', function() {
+		loadFiles(this.files);
+	});
+
+	// search
+	document.querySelector('#search-box .submit').addEventListener('click', e => {
+		searchQuotes(searchInput.value); 
+	});
+	searchInput.addEventListener('keyup', e => {
+		if (e.key == "Enter") {
+			searchQuotes(searchInput.value); 
+		}
+	});
+	document.querySelector('#search-box .randomize').addEventListener('click', e => {
+		let res = quoteSearcher.randomize();
+		displayQuotes(res);
+	});
+
+	// filters
+	filterAuthor.addEventListener('change', e => {
+		filterBook.value = '';
+		let results = quoteSearcher.filterAuthor(e.target.value);
+
+		displayQuotes(results);
+	});
+
+	filterBook.addEventListener('change', e => {
+		filterAuthor.value = '';
+		let results = quoteSearcher.filterBook(e.target.value);
+
+		displayQuotes(results);
+	});
+
+	// export
+	document.querySelector('.export-clippings').addEventListener('click', e => {
+		quoteSearcher.exportClippings();
+	});
+
+	loadFiles(document.querySelector('#file').files);
+}
+
 
 function loadFiles(files) {
 	clearResults();
@@ -32,7 +71,7 @@ function loadFiles(files) {
 		fileReader.readAsText(files[i]);
 	}
 
-	document.querySelector('.imported-file-count').innerHTML = `${files.length} imported file${files.length > 1 ? 's' : ''}`;
+	document.querySelector('.imported-file-count').innerHTML = `${files.length} import${files.length > 1 ? 's' : ''}`;
 	document.querySelector('.imported-file-count').title = fileNames.join(', ');
 }
 
@@ -48,19 +87,7 @@ function clearResults() {
 	filterBook.innerHTML = '<option></option>';
 }
 
-// search
-document.querySelector('#search-box .submit').addEventListener('click', e => {
-	searchQuotes(searchInput.value); 
-});
-searchInput.addEventListener('keyup', e => {
-	if (e.key == "Enter") {
-		searchQuotes(searchInput.value); 
-	}
-});
-document.querySelector('#search-box .randomize').addEventListener('click', e => {
-	let res = quoteSearcher.randomize();
-	displayQuotes(res);
-});
+
 
 function searchQuotes(query) {
 	clearResults();
@@ -74,52 +101,39 @@ function displayQuotes(quotes) {
 	document.querySelector('.result-count').innerHTML = `${quotes.length} quotes`;
 
 	quotes.forEach(quote => {
-		appendQuote(quote.content, quote.book, quote.author, quote.date);
+		appendQuote(quote);
 	});
 }
 
-function appendQuote(content, bookTitle, author, date) {
+function appendQuote(quote) {
 	let quoteBox = document.createElement('div');
 	quoteBox.className = 'quote-box';
-	const book = bookTitle;
 	quoteBox.innerHTML = `
-	<q class="quote">${content}</q>
-	<p><strong class="author">${author}</strong>, <em class="book">${book}</em></p>
+	<q class="quote">${quote.content}</q>
+	<p><strong class="author">${quote.author}</strong>, <em class="book">${quote.book}</em></p>
 	<input type="image" src="imgs/delete.png" height="20px" title="Delete" />
+	${quote.date ? `<em class="date">${quote.date}</em>` : ''}
+	${quote.locs ? `<span class="locs">Loc ${quote.locs}</span>` : ''}
 `;
-	quoteBox.querySelector('input').addEventListener('click', e=> {
-		e.target.parentNode.classList.toggle('quote-disabled');
-	});
 
-	if (date) {
-		quoteBox.innerHTML += `<em class="date">${date}</em>`;
-	}
+	if (!quote.enabled)
+		quoteBox.classList.add('quote-disabled');
+
 	resultsBox.appendChild(quoteBox);
 
-	if (!filterBooks.includes(book)) {
-		filterBooks.push(book);
-		filterBook.innerHTML += `<option value="${bookTitle}">${bookTitle} - ${author}</option>`;
+	quoteBox.querySelector('input').addEventListener('click', e => {
+		e.target.parentNode.classList.toggle('quote-disabled');
+		quote.enabled = !quote.enabled;
+	});
+	
+	if (!filterBooks.includes(quote.book)) {
+		filterBooks.push(quote.book);
+		filterBook.innerHTML += `<option value="${quote.book}">${quote.book}${quote.author ? ` - ${quote.author}` : ''}</option>`;
 	}
-	if (!filterAuthors.includes(author)) {
-		filterAuthors.push(author);
-		filterAuthor.innerHTML += `<option value="${author}">${author}</option>`;
+	if (quote.author && !filterAuthors.includes(quote.author)) {
+		filterAuthors.push(quote.author);
+		filterAuthor.innerHTML += `<option value="${quote.author}">${quote.author}</option>`;
 	}
 }
 
-
-// filters
-filterAuthor.addEventListener('change', e => {
-	filterBook.value = '';
-	let results = quoteSearcher.filterAuthor(e.target.value);
-
-	displayQuotes(results);
-});
-
-filterBook.addEventListener('change', e => {
-	filterAuthor.value = '';
-	let results = quoteSearcher.filterBook(e.target.value);
-
-	displayQuotes(results);
-});
-
-loadFiles(document.querySelector('#file').files);
+init();

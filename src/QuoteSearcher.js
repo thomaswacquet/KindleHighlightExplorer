@@ -25,15 +25,18 @@ class QuoteSearcher {
 			}
 		  
 			return array;
-		  }
+		}
 
+		return shuffle(getSearchResultsWithFilters());
+	}
+
+	getSearchResultsWithFilters() {
 		let arr = this.quoteSearchResults;
 		if (this.authorFilter)
 			arr = this.filterAuthor(this.authorFilter);
 		if (this.bookFilter)
 			arr = this.filterBook(this.bookFilter);
-
-		return shuffle(arr);
+		return arr;
 	}
 
 	loadQuotesFromClippings(clippings) {
@@ -45,13 +48,17 @@ class QuoteSearcher {
 
 			if (!quoteLines[3])
 				return;
+			if (/Your Note on Location/i.test(quoteLines[1]))
+				return;
 
-			let bookMatches = /(.*?) \(/.exec(quoteLines[0])
-			let authorMatches = /\(([^)]+)\)/g.exec(quoteLines[0]);
+			let bookMatches = /(.*?) \(/i.exec(quoteLines[0])
+			let authorMatches = /\(([^)]+)\)$/i.exec(quoteLines[0]);
+			let locMatches = /Your Highlight on Location (\d*-?\d*)/i.exec(quoteLines[1])
 			let author = '';
 			let book = quoteLines[0];
-			let dateMatches = /Added on (.*)/.exec(quoteLines[1]);
+			let dateMatches = /Added on (.*)/i.exec(quoteLines[1]);
 			let date = "";
+			let locs = "";
 
 			if (bookMatches != null)
 				book = bookMatches[bookMatches.length - 1];
@@ -59,12 +66,16 @@ class QuoteSearcher {
 				author = authorMatches[authorMatches.length - 1];
 			if (dateMatches != null)
 				date = dateMatches[dateMatches.length - 1];
+			if (locMatches != null)
+				locs = locMatches[locMatches.length - 1];
 
 			this.allQuotes.push({
 				content: quoteLines[3],
 				book: book,
 				author: author,
-				date: date
+				date: date,
+				enabled: true,
+				locs: locs
 			});
 		});
 	}
@@ -117,5 +128,31 @@ class QuoteSearcher {
 			}
 		});
 		return this.quoteSearchResults;
+	}
+
+	exportClippings() {
+		let lines = [];
+		let quotesToExport = this.getSearchResultsWithFilters();
+
+		quotesToExport.forEach(quote => {
+			if (!quote.enabled) {
+				console.log(lines)
+				return;
+			}
+
+			let string ='';
+
+			string += `${quote.book} (${quote.author})\n`;
+			if (quote.locs && quote.date)
+				string += `- Your Highlight on Location ${quote.locs} | Added on ${quote.date}\n`;
+			else
+				string += '-\n';
+			string += `\n${quote.content}\n==========\n`;
+			lines.push(string)
+		});
+
+		let blob = new Blob(lines,
+		{ type: "text/plain;charset=utf-8" });
+		saveAs(blob, "My New Clippings.txt");
 	}
 };
