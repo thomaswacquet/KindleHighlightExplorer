@@ -8,6 +8,34 @@ class QuoteSearcher {
 		this.allQuotes = [];
 	}
 
+	randomize() {
+		function shuffle(array) {
+			var currentIndex = array.length,  randomIndex;
+		  
+			// While there remain elements to shuffle...
+			while (currentIndex != 0) {
+		  
+			  // Pick a remaining element...
+			  randomIndex = Math.floor(Math.random() * currentIndex);
+			  currentIndex--;
+		  
+			  // And swap it with the current element.
+			  [array[currentIndex], array[randomIndex]] = [
+				array[randomIndex], array[currentIndex]];
+			}
+		  
+			return array;
+		  }
+
+		let arr = this.quoteSearchResults;
+		if (this.authorFilter)
+			arr = this.filterAuthor(this.authorFilter);
+		if (this.bookFilter)
+			arr = this.filterBook(this.bookFilter);
+
+		return shuffle(arr);
+	}
+
 	loadQuotesFromClippings(clippings) {
 		let text = clippings.replaceAll('\r\n', '\n');
 		let textQuotes = text.split('==========\n');
@@ -42,12 +70,15 @@ class QuoteSearcher {
 	}
 
 	filterAuthor(author) {
+		this.authorFilter = author;
+		this.bookFilter = "";
+
 		if (!this.quoteSearchResults.length)
 			this.quoteSearchResults = this.allQuotes;
 
 		let results = [];
 		this.quoteSearchResults.forEach(quote => {
-			if (quote.author == author) {
+			if (author && quote.author == author) {
 				results.push(quote);
 			}
 		});
@@ -55,12 +86,16 @@ class QuoteSearcher {
 	}
 
 	filterBook(book) {
+		this.bookFilter = book;
+		this.authorFilter = "";
+
+
 		if (!this.quoteSearchResults.length)
 			this.quoteSearchResults = this.allQuotes;
 
 		let results = [];
 		this.quoteSearchResults.forEach(quote => {
-			if (quote.book == book) {
+			if (book && quote.book == book) {
 				results.push(quote);
 			}
 		});

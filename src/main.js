@@ -9,6 +9,7 @@ let filterAuthors = [];
 let quoteSearcher = new QuoteSearcher();
 
 
+searchInput.value = "";
 // load files
 document.querySelector('#file').addEventListener('change', function() {
 	loadFiles(this.files);
@@ -17,18 +18,22 @@ document.querySelector('#file').addEventListener('change', function() {
 function loadFiles(files) {
 	clearResults();
 	quoteSearcher.clearQuotes();
-
+	let fileNames = [];
 	for (let i = 0; i < files.length; i++) {
+		fileNames.push(files[i].name)
 		let fileReader = new FileReader();
 		fileReader.onload = e => {
 			quoteSearcher.loadQuotesFromClippings(e.target.result);
-//			console.log(quoteSearcher.allQuotes)
+
 			let results = quoteSearcher.search('');
 			displayQuotes(results);
 		};
-
+		
 		fileReader.readAsText(files[i]);
 	}
+
+	document.querySelector('.imported-file-count').innerHTML = `${files.length} imported file${files.length > 1 ? 's' : ''}`;
+	document.querySelector('.imported-file-count').title = fileNames.join(', ');
 }
 
 function clearResults() {
@@ -52,6 +57,10 @@ searchInput.addEventListener('keyup', e => {
 		searchQuotes(searchInput.value); 
 	}
 });
+document.querySelector('#search-box .randomize').addEventListener('click', e => {
+	let res = quoteSearcher.randomize();
+	displayQuotes(res);
+});
 
 function searchQuotes(query) {
 	clearResults();
@@ -72,13 +81,15 @@ function displayQuotes(quotes) {
 function appendQuote(content, bookTitle, author, date) {
 	let quoteBox = document.createElement('div');
 	quoteBox.className = 'quote-box';
-	const book = bookTitle + ' - ' + author;
-
+	const book = bookTitle;
 	quoteBox.innerHTML = `
-	<p class="quote">${content}</p>
-	<em>${author}</em><br>
-	<strong class="book">${book}</strong>
-	`;
+	<q class="quote">${content}</q>
+	<p><strong class="author">${author}</strong>, <em class="book">${book}</em></p>
+	<input type="image" src="imgs/delete.png" height="20px" title="Delete" />
+`;
+	quoteBox.querySelector('input').addEventListener('click', e=> {
+		e.target.parentNode.classList.toggle('quote-disabled');
+	});
 
 	if (date) {
 		quoteBox.innerHTML += `<em class="date">${date}</em>`;
@@ -87,7 +98,7 @@ function appendQuote(content, bookTitle, author, date) {
 
 	if (!filterBooks.includes(book)) {
 		filterBooks.push(book);
-		filterBook.innerHTML += `<option value="${bookTitle}">${book}</option>`;
+		filterBook.innerHTML += `<option value="${bookTitle}">${bookTitle} - ${author}</option>`;
 	}
 	if (!filterAuthors.includes(author)) {
 		filterAuthors.push(author);

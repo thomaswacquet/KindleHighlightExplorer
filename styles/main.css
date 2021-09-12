@@ -1,0 +1,214 @@
+@font-face {
+	font-family: "swansea";
+	src: url("Swansea.ttf");
+}
+@font-face {
+	font-family:"painter";
+	src: url("Painter.ttf");
+}
+@font-face {
+	font-family:"bookerly";
+	src: url("Bookerly.ttf");
+}
+/*
+blue: #b9cbcb
+oasis: #d7d4c1
+*/
+
+
+body {
+	font-family: "bookerly"; 
+	margin: 0;
+	padding: 0;
+	background: #b9cbcb ;
+	background: #d7d4c1 ;
+	color: #0b0b0b;
+}
+header {
+	background: #d7d4c1;
+	width:100%;
+	height: 50px;
+	position: fixed;
+	box-shadow: 2px 2px 0 #0b0b0b;
+	display: flex;
+	align-items: center;
+	z-index: 10;
+}
+
+header button, .import {
+	border-radius: .25rem;
+	padding: .375rem .75rem;
+	background: #b9cbcb;
+	border: 2px solid  #0b0b0b;
+	font-family: "bookerly";
+	margin: 0 15px;
+	font-size: 14px;
+	box-shadow: 1px 1px 0px #0b0b0b;
+}
+
+header .export {
+	position: absolute;
+	right: 5px;
+}
+
+header .imported-file-count {
+	color: #989491;
+	font-size: 14px;
+	display: inline-block;
+}
+header .imported-file-count:hover {
+	transform: scale(1.05);
+	cursor: help;
+}
+.logo {
+	margin-top: 80px;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+
+header .import {
+	margin-left: 15px;
+}
+header .import:hover {
+	cursor: pointer;
+}
+
+#search-input::placeholder {
+	color: #989491;
+}
+#search-input {
+	border: 2px solid black;
+	font-size: 28px;
+	border-radius: 0.25em;
+	background: #b9cbcb;
+	padding:.375rem .75rem;
+	box-shadow: 2px 2px 0 #0b0b0b;
+	font-family: "bookerly";
+}
+#search-input:hover, #search-input:focus {
+	transform: scale(1.05);
+}
+
+.quote-box {
+	border: 3px solid #0b0b0b;
+	border-radius: 10px;
+	background: #d7d4c1;
+	background: #b9cbcb;
+	font-family: "bookerly";
+	margin: 10px 0;
+	padding: 10px;
+	box-shadow: 2px 2px 0px #0b0b0b;
+	position: relative;
+	font-size: 16px;
+}
+
+.quote-disabled {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+
+.quote-box input {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+
+	/* unhide if adding feature */
+	display: none;
+}
+.quote-box q {
+	font-size:18px;
+}
+.quote-box .date {
+	font-size: 12px;
+	color: #989491;
+}
+
+.buttons {
+
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.buttons button {
+	border-radius: .25rem;
+	padding: .375rem .75rem;
+	background: #b9cbcb;
+	border: 2px solid  #0b0b0b;
+	font-family: "bookerly";
+	margin: 0 15px;
+	font-size: 16px;
+	box-shadow: 2px 2px 0px #0b0b0b;
+}
+
+.buttons button:hover, header .import:hover, header button:hover {
+	cursor: pointer;
+	position: relative;
+	transform: scale(1.05);
+}
+.buttons button:active, header .import:active {
+	transform: scale(0.98);
+}
+.result-count {
+	margin: 0;
+	font-size: 16px;
+}
+
+.results-info {
+	margin: 15px 0;
+	padding-top: 10px;
+	padding-bottom: 15px;
+	display: flex;
+	position: relative;
+	border-top: 3px dashed #0b0b0b;
+}
+
+.results-info .filters {
+	position: absolute;
+	right: 0;
+}
+
+.results-info .filters select {
+	font-family: "bookerly";
+	display: inline-block;
+	max-width: 200px;
+	margin-left: 10px;
+	background: #b9cbcb;
+	border: 2px solid #0b0b0b;
+	border-radius: .25rem;
+	font-size: 16px;
+	box-shadow: 2px 2px 0 #0b0b0b;
+}
+.filters select option {
+	font-family: "bookerly";
+	font-size: 16px;
+} 
+
+h1 {
+	font-size: 52px;
+	font-family: "bookerly";
+	margin-top: 10px;
+	text-align: center;
+}
+
+
+main {
+	margin: 0 5px;
+
+}
+@media screen and (min-width: 800px) {
+	main {
+		margin: 0 10%;
+	}
+} 
+
+
+#search-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
