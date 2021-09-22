@@ -27,7 +27,7 @@ class QuoteSearcher {
 			return array;
 		}
 
-		return shuffle(getSearchResultsWithFilters());
+		return shuffle(this.getSearchResultsWithFilters());
 	}
 
 	getSearchResultsWithFilters() {
