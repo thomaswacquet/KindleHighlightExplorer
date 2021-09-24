@@ -130,7 +130,7 @@ function appendQuote(quote) {
 	let quoteBox = document.createElement('div');
 	quoteBox.className = 'quote-box';
 	quoteBox.innerHTML = `
-	<q class="quote">${quote.content}</q>
+	<p class="quote"><q>${quote.content}</q></p>
 	<p><strong class="author">${quote.author}</strong>, <em class="book">${quote.book}</em></p>
 	<input type="image" src="imgs/delete.png" height="20px" title="Delete" />
 	${quote.date ? `<em class="date">${quote.date}</em>` : ''}

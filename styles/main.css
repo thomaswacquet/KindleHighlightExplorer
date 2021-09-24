@@ -129,8 +129,10 @@ header .import:hover {
 
 }
 
-.quote-box q {
-	font-size:18px;
+.quote-box .quote {
+	font-size: 18px;
+	margin-top: 0;
+	word-break:break-word;
 }
 .quote-box .date {
 	font-size: 12px;
