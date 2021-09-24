@@ -50,7 +50,15 @@ function init() {
 		quoteSearcher.exportClippings();
 	});
 
-	loadFiles(document.querySelector('#file').files);
+	document.querySelector('.export-all-clippings').addEventListener('click', e => {
+		quoteSearcher.exportAllClippings();
+	});
+
+	quoteSearcher.loadFromCache();
+
+	let results = quoteSearcher.search('');
+	displayQuotes(results);
+	//loadFiles(document.querySelector('#file').files);
 }
 
 
@@ -145,8 +153,9 @@ function appendQuote(quote) {
 	quoteBox.querySelector('input').addEventListener('click', e => {
 		e.target.parentNode.classList.toggle('quote-disabled');
 		quote.enabled = !quote.enabled;
+		quoteSearcher.update();
 	});
-	
+
 	if (!filterBooks.includes(quote.book)) {
 		filterBooks.push(quote.book);
 		filterBook.innerHTML += `<option value="${quote.book}">${quote.book}${quote.author ? ` - ${quote.author}` : ''}</option>`;
@@ -155,6 +164,7 @@ function appendQuote(quote) {
 		filterAuthors.push(quote.author);
 		filterAuthor.innerHTML += `<option value="${quote.author}">${quote.author}</option>`;
 	}
+	
 }
 
 init();

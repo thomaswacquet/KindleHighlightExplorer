@@ -12,13 +12,17 @@
 </head>
 <body>
 	<header>
-		<label class="import" for="file" >
-			Import
-		</label>
-		<input id="file" type="file" accept=".txt" multiple>
-		<span class="imported-file-count">No imports</span>
-
-		<button class="export-clippings">Export</button>
+		<div class="import-container">
+			<label class="import" for="file" >
+				Import
+			</label>
+			<input id="file" type="file" accept=".txt" multiple>
+			<span class="imported-file-count">No imports</span>
+		</div>
+		<div class="export-buttons">
+			<button class="export-clippings">Export</button>
+			<button class="export-all-clippings">Export All</button>
+		</div>
 	</header>
 
 	<main>
