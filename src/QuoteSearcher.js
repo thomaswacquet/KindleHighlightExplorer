@@ -147,8 +147,8 @@ class QuoteSearcher {
 	}
 	
 	exportAllClippings() {
-		let quotesToExport = this.allQuotes();
-		
+		let quotesToExport = this.allQuotes;
+
 		this.exportQuotes(quotesToExport);
 	}
 	
